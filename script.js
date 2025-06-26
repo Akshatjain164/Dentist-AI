@@ -122,7 +122,7 @@ const dentalConditions = [
   }
 ];
 
-// Helper: Find best matching dental condition
+
 function matchDentalCondition(symptoms) {
   const s = symptoms.toLowerCase();
   for (const cond of dentalConditions) {
@@ -136,7 +136,7 @@ function matchDentalCondition(symptoms) {
 }
 
 function analyzeSymptoms(symptoms) {
-  // Try to match with our data
+  
   const matched = matchDentalCondition(symptoms);
   if (matched) {
     return {
@@ -147,7 +147,7 @@ function analyzeSymptoms(symptoms) {
     };
   }
 
-  // If not matched, fallback to previous logic
+
   const s = symptoms.toLowerCase();
   if (s.includes('toothache') || s.includes('tooth pain')) {
     if (s.includes('swelling') || s.includes('swollen')) {
@@ -210,7 +210,7 @@ function analyzeSymptoms(symptoms) {
     };
   }
 
-  // Default response
+  
   return {
     condition: "General Advice",
     info: "Dental symptoms can have many causes. It's important to maintain good oral hygiene and get regular dental checkups.",
@@ -222,7 +222,7 @@ function analyzeSymptoms(symptoms) {
   };
 }
 
-// Show loading overlay for a minimum of 1.3s, then fade out and show results
+
 function showLoadingOverlay(cb) {
   const overlay = document.getElementById('loading-overlay');
   overlay.classList.remove('hide');
@@ -230,14 +230,14 @@ function showLoadingOverlay(cb) {
     overlay.classList.add('hide');
     setTimeout(() => {
       cb();
-    }, 600); // wait for fade out
+    }, 600); 
   }, 1300);
 }
 
-// Animate result panel when re-showing
+
 function animateResultPanel(resultDiv) {
   resultDiv.style.animation = "none";
-  // force reflow
+  
   void resultDiv.offsetWidth;
   resultDiv.style.animation = "";
 }
@@ -258,7 +258,7 @@ document.getElementById("symptomForm").addEventListener("submit", function(e) {
     let html = `<strong>Condition:</strong> ${analysis.condition}<br>`;
     html += `<div style="margin-top:8px;"><strong>Info:</strong> ${analysis.info}</div>`;
 
-    // Show antibiotics/pain relief if present
+   
     if (analysis.antibiotic !== undefined && analysis.painRelief !== undefined) {
       html += `<span class="antibiotic"><strong>Antibiotic:</strong> ${analysis.antibiotic}</span>`;
       html += `<span class="pain-relief"><strong>Pain Relief:</strong> ${analysis.painRelief}</span>`;
@@ -280,9 +280,20 @@ document.getElementById("symptomForm").addEventListener("submit", function(e) {
   });
 });
 
-// Hide loader on first load after 1.2s
+
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     document.getElementById('loading-overlay').classList.add('hide');
-  }, 1200);
+  }, 2500);
 });
+
+function showLoadingOverlay(cb) {
+  const overlay = document.getElementById('loading-overlay');
+  overlay.classList.remove('hide');
+  setTimeout(() => {
+    overlay.classList.add('hide');
+    setTimeout(() => {
+      cb();
+    }, 600); 
+  }, 1500); 
+}
