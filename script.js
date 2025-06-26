@@ -222,6 +222,26 @@ function analyzeSymptoms(symptoms) {
   };
 }
 
+// Show loading overlay for a minimum of 1.3s, then fade out and show results
+function showLoadingOverlay(cb) {
+  const overlay = document.getElementById('loading-overlay');
+  overlay.classList.remove('hide');
+  setTimeout(() => {
+    overlay.classList.add('hide');
+    setTimeout(() => {
+      cb();
+    }, 600); // wait for fade out
+  }, 1300);
+}
+
+// Animate result panel when re-showing
+function animateResultPanel(resultDiv) {
+  resultDiv.style.animation = "none";
+  // force reflow
+  void resultDiv.offsetWidth;
+  resultDiv.style.animation = "";
+}
+
 document.getElementById("symptomForm").addEventListener("submit", function(e) {
   e.preventDefault();
   const symptoms = document.getElementById("symptoms").value.trim();
@@ -229,35 +249,40 @@ document.getElementById("symptomForm").addEventListener("submit", function(e) {
   if (!symptoms) {
     resultDiv.innerHTML = "Please describe your dental symptoms.";
     resultDiv.classList.remove("hidden");
-    resultDiv.style.animation = "fadeResult 0.7s 0.1s cubic-bezier(.39,1.25,.45,1) forwards";
+    animateResultPanel(resultDiv);
     return;
   }
 
-  const analysis = analyzeSymptoms(symptoms);
-  let html = `<strong>Condition:</strong> ${analysis.condition}<br>`;
-  html += `<div style="margin-top:8px;"><strong>Info:</strong> ${analysis.info}</div>`;
+  showLoadingOverlay(() => {
+    const analysis = analyzeSymptoms(symptoms);
+    let html = `<strong>Condition:</strong> ${analysis.condition}<br>`;
+    html += `<div style="margin-top:8px;"><strong>Info:</strong> ${analysis.info}</div>`;
 
-  // Show antibiotics/pain relief if present
-  if (analysis.antibiotic !== undefined && analysis.painRelief !== undefined) {
-    html += `<span class="antibiotic"><strong>Antibiotic:</strong> ${analysis.antibiotic}</span>`;
-    html += `<span class="pain-relief"><strong>Pain Relief:</strong> ${analysis.painRelief}</span>`;
-  }
+    // Show antibiotics/pain relief if present
+    if (analysis.antibiotic !== undefined && analysis.painRelief !== undefined) {
+      html += `<span class="antibiotic"><strong>Antibiotic:</strong> ${analysis.antibiotic}</span>`;
+      html += `<span class="pain-relief"><strong>Pain Relief:</strong> ${analysis.painRelief}</span>`;
+    }
 
-  if (analysis.tips) {
-    html += `<div style="margin-top:8px;"><strong>Tips:</strong><ul>`;
-    analysis.tips.forEach(tip => {
-      html += `<li>${tip}</li>`;
-    });
-    html += `</ul></div>`;
-  }
-  if (analysis.emergency) {
-    html += `<div class="emergency">${analysis.emergency}</div>`;
-  }
-  resultDiv.innerHTML = html;
-  resultDiv.classList.remove("hidden");
-  // Re-trigger animation
-  resultDiv.style.animation = "none"; // Reset
+    if (analysis.tips) {
+      html += `<div style="margin-top:8px;"><strong>Tips:</strong><ul>`;
+      analysis.tips.forEach(tip => {
+        html += `<li>${tip}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+    if (analysis.emergency) {
+      html += `<div class="emergency">${analysis.emergency}</div>`;
+    }
+    resultDiv.innerHTML = html;
+    resultDiv.classList.remove("hidden");
+    animateResultPanel(resultDiv);
+  });
+});
+
+// Hide loader on first load after 1.2s
+window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    resultDiv.style.animation = "";
-  }, 10);
+    document.getElementById('loading-overlay').classList.add('hide');
+  }, 1200);
 });
