@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto:wght@400;500&display=swap');
 /* === Starry Night and Shooting Stars Background === */
 * {
   margin: 0;
@@ -5,15 +6,94 @@
   box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap');
-
 body {
   min-height: 100vh;
   background: linear-gradient(to bottom, #0b0b2b, #1b2735 70%, #090a0f);
   overflow: hidden;
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', 'Roboto', Arial, sans-serif;
 }
 
+/* === Loading Overlay === */
+#loading-overlay {
+  position: fixed;
+  z-index: 9999;
+  background: #0b0b2b; /* fully opaque, matches your screenshot */
+  width: 100vw;
+  height: 100vh;
+  top: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s cubic-bezier(.39,1.25,.45,1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#loading-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(.39,1.25,.45,1);
+}
+
+.loading-spinner {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.tooth-icon {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  filter: drop-shadow(0 2px 6px #1089ff33);
+  animation: pulseTooth 1.6s infinite;
+}
+
+@keyframes pulseTooth {
+  0% { filter: drop-shadow(0 2px 6px #1089ff33) brightness(1);}
+  50% { filter: drop-shadow(0 6px 15px #1089ff77) brightness(1.08);}
+  100% { filter: drop-shadow(0 2px 6px #1089ff33) brightness(1);}
+}
+
+.circular-loader {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 5px solid #5ad1ff30;
+  border-top: 5px solid #1089ff;
+  animation: spin 1.2s linear infinite;
+  z-index: 1;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0);}
+  100% { transform: rotate(360deg);}
+}
+
+.loading-text {
+  font-family: 'Quicksand', Arial, sans-serif;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.42rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 8px #1089ff55;
+  margin-top: 6px;
+  animation: fadeInLoadingText 1s;
+}
+@keyframes fadeInLoadingText {
+  from { opacity: 0; transform: translateY(20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* === Starry BG === */
 .stars {
   width: 1px;
   height: 1px;
@@ -91,8 +171,6 @@ body {
     opacity: 0;
   }
 }
-
-/* Additional twinkling stars with different animation timing */
 .stars::after {
   content: "";
   position: absolute;
@@ -112,7 +190,7 @@ body {
 /* === App UI styles with animation and fonts === */
 .container {
   max-width: 500px;
-  background: rgba(255,255,255,0.94);
+  background: #fff; /* Now fully opaque */
   margin: 240px auto;
   padding: 34px 28px 30px 28px;
   border-radius: 16px;
@@ -135,7 +213,7 @@ body {
 }
 
 h1 {
-  font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', Arial, sans-serif;
   color: #14375e;
   text-align: center;
   margin-bottom: 24px;
@@ -143,6 +221,7 @@ h1 {
   letter-spacing: 1px;
   text-shadow: 0 2px 8px #bee3ff77;
   animation: slideDownFade 1.3s cubic-bezier(.49,1.74,.36,.88);
+  font-weight: 700;
 }
 
 @keyframes slideDownFade {
@@ -157,7 +236,7 @@ h1 {
 }
 
 label {
-  font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', Arial, sans-serif;
   font-weight: 500;
   display: block;
   margin-bottom: 10px;
@@ -173,7 +252,7 @@ textarea {
   border: 1.5px solid #b3d9ff;
   margin-bottom: 16px;
   resize: vertical;
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Roboto', 'Quicksand', Arial, sans-serif;
   background: #f7fbff;
   transition: border-color 0.3s;
 }
@@ -190,7 +269,7 @@ button {
   border: none;
   border-radius: 8px;
   font-size: 1.08rem;
-  font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', Arial, sans-serif;
   cursor: pointer;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -210,7 +289,7 @@ button:hover, button:focus {
   border-radius: 8px;
   font-size: 1.08rem;
   color: #1c324a;
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', 'Roboto', Arial, sans-serif;
   box-shadow: 0 2px 8px #c9eaff33;
   opacity: 0;
   transform: translateY(24px);
@@ -225,7 +304,7 @@ button:hover, button:focus {
 }
 
 #result strong {
-  font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', Arial, sans-serif;
   color: #0d2c4a;
   font-weight: 700;
   font-size: 1.08rem;
@@ -250,7 +329,7 @@ button:hover, button:focus {
   padding: 6px 16px;
   margin: 10px 12px 8px 0;
   font-size: 1.01rem;
-  font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+  font-family: 'Quicksand', Arial, sans-serif;
   color: #0d62b1;
   font-weight: 600;
   box-shadow: 0 1px 6px #b4e3ff1a;
