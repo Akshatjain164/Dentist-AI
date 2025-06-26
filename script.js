@@ -229,6 +229,7 @@ document.getElementById("symptomForm").addEventListener("submit", function(e) {
   if (!symptoms) {
     resultDiv.innerHTML = "Please describe your dental symptoms.";
     resultDiv.classList.remove("hidden");
+    resultDiv.style.animation = "fadeResult 0.7s 0.1s cubic-bezier(.39,1.25,.45,1) forwards";
     return;
   }
 
@@ -238,8 +239,8 @@ document.getElementById("symptomForm").addEventListener("submit", function(e) {
 
   // Show antibiotics/pain relief if present
   if (analysis.antibiotic !== undefined && analysis.painRelief !== undefined) {
-    html += `<div style="margin-top:8px;"><strong>Antibiotic:</strong> ${analysis.antibiotic}</div>`;
-    html += `<div style="margin-top:8px;"><strong>Pain Relief:</strong> ${analysis.painRelief}</div>`;
+    html += `<span class="antibiotic"><strong>Antibiotic:</strong> ${analysis.antibiotic}</span>`;
+    html += `<span class="pain-relief"><strong>Pain Relief:</strong> ${analysis.painRelief}</span>`;
   }
 
   if (analysis.tips) {
@@ -250,8 +251,13 @@ document.getElementById("symptomForm").addEventListener("submit", function(e) {
     html += `</ul></div>`;
   }
   if (analysis.emergency) {
-    html += `<div style="color:#c0392b; font-weight:bold; margin-top:12px;">${analysis.emergency}</div>`;
+    html += `<div class="emergency">${analysis.emergency}</div>`;
   }
   resultDiv.innerHTML = html;
   resultDiv.classList.remove("hidden");
+  // Re-trigger animation
+  resultDiv.style.animation = "none"; // Reset
+  setTimeout(() => {
+    resultDiv.style.animation = "";
+  }, 10);
 });
